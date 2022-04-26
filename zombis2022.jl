@@ -17,6 +17,7 @@ end
 # ╔═╡ 70b0ea02-bebb-45ea-b6cb-29b87ff3a1a0
 begin
 	import Pkg
+	Pkg.activate(mktempdir())
 	Pkg.add("HypertextLiteral")
 	Pkg.add("PlutoUI")
 	Pkg.add("Plots")
