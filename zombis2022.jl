@@ -16,9 +16,10 @@ end
 
 # ╔═╡ 70b0ea02-bebb-45ea-b6cb-29b87ff3a1a0
 begin
-	using Pkg
+	import Pkg
 	Pkg.add("HypertextLiteral")
 	Pkg.add("PlutoUI")
+	Pkg.add("Plots")
 end
 
 # ╔═╡ ac901706-a470-47ba-8351-f9e87869ab9a
