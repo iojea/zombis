@@ -14,15 +14,6 @@ macro bind(def, element)
     end
 end
 
-# ╔═╡ 70b0ea02-bebb-45ea-b6cb-29b87ff3a1a0
-begin
-	import Pkg
-	Pkg.activate(mktempdir())
-	Pkg.add("HypertextLiteral")
-	Pkg.add("PlutoUI")
-	Pkg.add("Plots")
-end
-
 # ╔═╡ ac901706-a470-47ba-8351-f9e87869ab9a
 begin
 	using HypertextLiteral: @htl
@@ -488,7 +479,6 @@ begin
 end
 
 # ╔═╡ Cell order:
-# ╟─70b0ea02-bebb-45ea-b6cb-29b87ff3a1a0
 # ╟─ac901706-a470-47ba-8351-f9e87869ab9a
 # ╟─ec7ab690-a52c-11ec-1e8a-f77727daef1a
 # ╟─696e597a-45f0-44b9-b47e-a877abb87ab0
