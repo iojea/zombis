@@ -18,13 +18,13 @@ end
 begin
 	using Pkg
 	Pkg.add("HypertextLiteral")
+	Pkg.add("PlutoUI")
 end
 
 # ╔═╡ ac901706-a470-47ba-8351-f9e87869ab9a
 begin
 	using HypertextLiteral: @htl
 	using PlutoUI
-	using LinearAlgebra
 	using Plots
 	theme(:wong)
 end
