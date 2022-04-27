@@ -1,0 +1,10 @@
+authors = ["Ignacio Ojea <iojea@dm.uba.ar>",
+           "Mercedes Pérez Millán <mpmillan@dm.uba.ar>"]
+uuid    = "7beb7121-b1e4-487b-b9f7-13bf3531b6cb"
+version = "1.0.0"
+
+[deps]
+Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
+PlutoUI = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
+HypertextLiteral = "ac1192a8-f4b3-4bfe-ba22-af5b92cd3ab2"
+
