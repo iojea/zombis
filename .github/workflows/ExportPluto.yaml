@@ -21,7 +21,7 @@ jobs:
             - name: Install Julia
               uses: julia-actions/setup-julia@v1
               with:
-                  version: 1.7
+                  version: 1.7.1
 
             - name: Cache Julia artifacts & such
               uses: julia-actions/cache@v1
@@ -43,6 +43,7 @@ jobs:
                   Pkg.add([
                     Pkg.PackageSpec(name="PlutoSliderServer", version="0.3.2-0.3"),
                   ])
+                  Pkg.add(["Plots","PlutoUI","HypertextLiteral"])
                   import PlutoSliderServer
                   PlutoSliderServer.github_action(".";
                     Export_cache_dir="pluto_state_cache",
