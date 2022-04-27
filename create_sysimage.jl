@@ -1,12 +1,6 @@
 using PackageCompiler
 create_sysimage([:Pluto, :PlutoUI,
-                 :CodeTracking, :Combinatorics,
-                 :DataFrames, :Distributions,
-                 :FixedEffectModels, :ForwardDiff, :GLM,
-                 :InteractiveUtils, :LineSearches,
-                 :LinearMaps, :Markdown, :NLsolve,
-                 :OffsetArrays, :Optim, :PrettyTables,
-                 :Revise, :StatsPlots];
+                 :Plots, :Markdown, :HypertextLiteral];
                 #precompile_execution_file = "warmup.jl",
                 precompile_statements_file = "combined_trace.jl",
                 #replace_default = true,
