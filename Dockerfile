@@ -34,7 +34,7 @@ RUN apt-get update && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 #RUN julia create_sysimage.jl
 
-#USER ${NB_USER}
+USER ${NB_USER}
 RUN julia --project=${USER_HOME_DIR} create_sysimage.jl
 RUN julia -J${USER_HOME_DIR}/sysimage.so --project=${USER_HOME_DIR} -e "using Pluto"
 
