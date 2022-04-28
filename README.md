@@ -1,6 +1,6 @@
-# Pluto Notebooks
+# Zombis
 
-A collection of interactive [Pluto.jl](https://github.com/fonsp/Pluto.jl) notebooks.
+An interactive [Pluto.jl](https://github.com/fonsp/Pluto.jl) notebook about zombis.
 
 ### Notebooks
 
