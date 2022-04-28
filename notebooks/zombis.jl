@@ -16,9 +16,9 @@ end
 
 # ╔═╡ ac901706-a470-47ba-8351-f9e87869ab9a
 begin
-	using HypertextLiteral: @htl
-	using PlutoUI: CheckBox, Slider, Show
-	using Plots: plot, plot!, scatter, scatter!, theme
+	using HypertextLiteral
+	using PlutoUI
+	using Plots
 	theme(:wong)
 end
 
@@ -1244,7 +1244,7 @@ version = "0.9.1+5"
 """
 
 # ╔═╡ Cell order:
-# ╟─ac901706-a470-47ba-8351-f9e87869ab9a
+# ╠═ac901706-a470-47ba-8351-f9e87869ab9a
 # ╟─ec7ab690-a52c-11ec-1e8a-f77727daef1a
 # ╟─d52565c5-e983-40d2-ab65-c76bfc3fcc01
 # ╟─097d4c17-5966-4ef5-962d-c6545091e97c
