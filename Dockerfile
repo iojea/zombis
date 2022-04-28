@@ -34,7 +34,7 @@ RUN apt-get update && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 RUN julia create_sysimage.jl
 
-USER ${NB_USER}
+#USER ${NB_USER}
 
 RUN jupyter labextension install @jupyterlab/server-proxy && \
     jupyter lab build && \
