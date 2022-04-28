@@ -7,7 +7,7 @@ RUN wget https://julialang-s3.julialang.org/bin/linux/x64/1.7/julia-1.7.1-linux-
     ln -s /opt/julia-1.7.1/bin/julia /usr/local/bin/julia && \
     rm julia-1.7.1-linux-x86_64.tar.gz
 
-USER ${NB_USER}
+#USER ${NB_USER}
 
 COPY --chown=${NB_USER}:users ./plutoserver ./plutoserver
 COPY --chown=${NB_USER}:users ./environment.yml ./environment.yml
