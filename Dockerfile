@@ -7,7 +7,7 @@ RUN wget https://julialang-s3.julialang.org/bin/linux/x64/1.7/julia-1.7.1-linux-
     ln -s /opt/julia-1.7.1/bin/julia /usr/local/bin/julia && \
     rm julia-1.7.1-linux-x86_64.tar.gz
 
-#USER ${NB_USER}
+USER ${NB_USER}
 
 COPY --chown=${NB_USER}:users ./plutoserver ./plutoserver
 COPY --chown=${NB_USER}:users ./environment.yml ./environment.yml
@@ -24,7 +24,7 @@ COPY --chown=${NB_USER}:users ./create_sysimage.jl ./create_sysimage.jl
 ENV USER_HOME_DIR /home/${NB_USER}
 ENV JULIA_PROJECT ${USER_HOME_DIR}
 ENV JULIA_DEPOT_PATH ${USER_HOME_DIR}/.julia
-#WORKDIR ${USER_HOME_DIR}
+WORKDIR ${USER_HOME_DIR}
 
 RUN julia -e "import Pkg; Pkg.Registry.update(); Pkg.instantiate();"
 
@@ -32,9 +32,11 @@ USER root
 RUN apt-get update && \
     apt-get install -y --no-install-recommends build-essential && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
-RUN julia create_sysimage.jl
+#RUN julia create_sysimage.jl
 
-#USER ${NB_USER}
+USER ${NB_USER}
+RUN julia --project=${USER_HOME_DIR} create_sysimage.jl
+RUN julia -J${USER_HOME_DIR}/sysimage.so --project=${USER_HOME_DIR} -e "using Pluto"
 
 RUN jupyter labextension install @jupyterlab/server-proxy && \
     jupyter lab build && \
