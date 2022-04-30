@@ -247,7 +247,7 @@ Donde $M$ es la mortalidad de la población sana y $m$ es la mortalidad de los i
 # ╔═╡ 1a222185-2e57-4ed4-a70b-317e641366ab
 md"""Nuevamente, fijamos los valores $N=0.017$, $M=0.008$ y asumimos que la población inicial está formada por $1000$ suceptibles y $5$ infectados.
 
-Agregamos (de manera opciona) una tercer curva que muestra la población total (S+I)."""
+Agregamos (de manera opcional) una tercer curva que muestra la población total (S+I)."""
 
 # ╔═╡ b829c2b9-42e7-4a35-822b-8d202b0f883f
 md"""
