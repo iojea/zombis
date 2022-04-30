@@ -16,27 +16,38 @@ end
 
 # ╔═╡ ac901706-a470-47ba-8351-f9e87869ab9a
 begin
-	using HypertextLiteral: @htl
 	using PlutoUI
 	using Plots
 	theme(:dracula)
 end
 
 # ╔═╡ ec7ab690-a52c-11ec-1e8a-f77727daef1a
-@htl("""<h1 class="title">Cómo sobrevivir a una invasión zombi: ¡usando matemática!</h1>
-
+html"""<h1 class="title">Cómo sobrevivir a una invasión zombi: ¡usando matemática!</h1>
+	<script>
+		const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+		export prefersDarkScheme;
+	</script>
 	<style> 
-		.title {
+		@media (prefers-color-scheme: dark) {
+  			.title {
 			background: #333333;
 			border-radius: 12px;
 			text-align: center;
 			padding: 0px 10px 0px 10px;
-			color: #5090BB;
+			color: #5090BB;}
 		}
-	</style>""")
+		@media (prefers-color-scheme: light) {
+			.title {
+			background: #EEEEEE;
+			border-radius: 12px;
+			text-align: center;
+			padding: 0px 10px 0px 10px;
+			color: #BB6050;}
+		}
+	</style>"""
 
 # ╔═╡ 696e597a-45f0-44b9-b47e-a877abb87ab0
-@htl("""<h2 class="title">Primera Parte</h2>""")
+html"""<h2 class="title">Primera Parte</h2>"""
 
 # ╔═╡ 3a5b4a4f-7955-475f-9d02-448572a3e63a
 md"""Supongamos primero que todos los humanos vivimos en un edificio y salimos todos juntos para ver si hay más zombis. Cada vez que salimos, se infecta la mitad del grupo. Veamos cómo evoluciona la cantidad de humanos:"""
@@ -93,7 +104,7 @@ para ciertos valores de $\alpha$ y $\beta$,
 ¿Qué podemos deducir del comportamiento cuando el tiempo $n$ se hace cada vez más grande?"""
 
 # ╔═╡ d52565c5-e983-40d2-ab65-c76bfc3fcc01
-@htl("""<h3 class="title">Crecimiento con natalidad y mortalidad</h3>""")
+html"""<h3 class="title">Crecimiento con natalidad y mortalidad</h3>"""
 
 # ╔═╡ 097d4c17-5966-4ef5-962d-c6545091e97c
 md"""
@@ -154,18 +165,8 @@ md"""¿Qué ocurre si hay más natalidad que mortalidad?
 
 ¿Qué ocurre si las muertes y los nacimientos se equiparan?"""
 
-# ╔═╡ 6bbd67c1-6b98-468d-8ff4-022cc5bc48e0
-@htl("""<p class="separator"></p>
-
-	<style> 
-		.separator {
-			height: 5px;
-			background-color:darkslategray;
-		}
-	</style>""")
-
 # ╔═╡ 3ef542df-44a1-43af-872e-1138c12eb17f
-@htl("""<h2 class="title">Competencia entre especies</h2>""")
+html"""<h2 class="title">Competencia entre especies</h2>"""
 
 # ╔═╡ 51443cff-ad5e-4d21-98ac-3256198e7a11
 md"""2.   A diferencia del modelo anterior, la cantidad de zombis y la cantidad de humanos dependen una de la otra. Empecemos suponiendo simplemente que la cantidad de zombis aumenta proporcionalmente a la cantidad de humanos. Entonces: 
@@ -400,7 +401,7 @@ begin
 end
 
 # ╔═╡ 037558b0-ed72-470f-a65a-f9a5df04e0b2
-@htl("""<h2 class="title">Modelos epidémicos</h2>""")
+html"""<h2 class="title">Modelos epidémicos</h2>"""
 
 # ╔═╡ dab82d69-8a98-465f-bbc3-da791552adf7
 md"""6. Consideremos el modelo para enfermedades infecciosas $SI$:
@@ -532,12 +533,10 @@ end
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
 [deps]
-HypertextLiteral = "ac1192a8-f4b3-4bfe-ba22-af5b92cd3ab2"
 Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
 PlutoUI = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
 
 [compat]
-HypertextLiteral = "~0.9.3"
 Plots = "~1.27.6"
 PlutoUI = "~0.7.38"
 """
@@ -1463,7 +1462,6 @@ version = "0.9.1+5"
 # ╟─d07a8fee-051b-4167-9d92-d4474803e03d
 # ╟─e4f95747-ab32-47df-bf4d-359aec4b81fc
 # ╟─b12e6b22-0626-46d5-9608-480f454712f3
-# ╟─6bbd67c1-6b98-468d-8ff4-022cc5bc48e0
 # ╟─3ef542df-44a1-43af-872e-1138c12eb17f
 # ╟─51443cff-ad5e-4d21-98ac-3256198e7a11
 # ╟─3179374a-be70-4025-8510-f5986a779539
