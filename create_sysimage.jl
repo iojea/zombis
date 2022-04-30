@@ -1,5 +1,5 @@
 using PackageCompiler
-create_sysimage([:Pluto, :PlutoUI, :Plots, :HypertextLiteral];
+create_sysimage([:Pluto, :PlutoUI, :Plots];
                 #precompile_execution_file = "warmup.jl",
                 #replace_default = true,
                 sysimage_path="/home/jovyan/sysimage.so",
