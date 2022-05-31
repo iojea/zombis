@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.19.5
+# v0.17.7
 
 using Markdown
 using InteractiveUtils
@@ -16,117 +16,49 @@ end
 
 # ╔═╡ ac901706-a470-47ba-8351-f9e87869ab9a
 begin
+	using HypertextLiteral
 	using PlutoUI
 	using Plots
-	theme(:dracula)
+	theme(:wong)
 end
 
 # ╔═╡ ec7ab690-a52c-11ec-1e8a-f77727daef1a
-html"""<h1 class="title">Cómo sobrevivir a una invasión zombi: ¡usando matemática!</h1>
-	<script>
-		const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
-		export prefersDarkScheme;
-	</script>
+@htl("""<h1 class="title">Cómo sobrevivir a una invasión zombi: ¡usando matemática!</h1>
+
 	<style> 
-		@media (prefers-color-scheme: dark) {
-  			.title {
-			background: #333333;
+		.title {
+			background: #D0B485;
 			border-radius: 12px;
 			text-align: center;
 			padding: 0px 10px 0px 10px;
-			color: #5090BB;}
+			color: #4080AA;
 		}
-		@media (prefers-color-scheme: light) {
-			.title {
-			background: #EEEEEE;
-			border-radius: 12px;
-			text-align: center;
-			padding: 0px 10px 0px 10px;
-			color: #BB6050;}
-		}
-	</style>"""
-
-# ╔═╡ 696e597a-45f0-44b9-b47e-a877abb87ab0
-html"""<h2 class="title">Primera Parte</h2>"""
-
-# ╔═╡ 3a5b4a4f-7955-475f-9d02-448572a3e63a
-md"""Supongamos primero que todos los humanos vivimos en un edificio y salimos todos juntos para ver si hay más zombis. Cada vez que salimos, se infecta la mitad del grupo. Veamos cómo evoluciona la cantidad de humanos:"""
-
-# ╔═╡ 7e7c5630-0999-401a-94ea-4e921c96d936
-let
-	url = "http://mate.dm.uba.ar/%7Eiojea/figura.png"
-	data = read(download(url))
-	PlutoUI.Show(MIME"image/jpg"(), data)
-end
-
-# ╔═╡ 2a86adbe-972a-4dd9-845d-609b187879bf
-md"""Supongamos ahora que todos los humanos vivimos en un edificio y salimos todos juntos para ver si hay más zombis. Pero cada vez que salimos, se infecta la décima parte del grupo:
-
- $\begin{array}{cccc}
-   h_0 & \phantom{aa} & h_1=h_0-\frac{h_0}{10} & \dots \\ 
-   t=0 & \phantom{aa} & t=1 & \dots \\
-  \end{array}$
-
- ¿Cuántos humanos somos a tiempo $n$ con respecto a lo que había al principio?
-
- $\begin{align*}
- h_{n+1} &= h_n-\frac{1}{10}h_{n}\\ 
-         &= \bigg(\frac{9}{10}\bigg) h_n \\
-         &= \bigg(\frac{9}{10}\bigg)\bigg(\frac{9}{10}\bigg) h_{n-1} \\
-         &= \bigg(\frac{9}{10}\bigg)^2 h_{n-1} \\
-         &= \dots  \\
-         &= \bigg(\frac{9}{10}\bigg)^{n+1} h_0 
-   \end{align*}$
-
- ¿Cómo será el gráfico de la cantidad de humanos en función del tiempo?"""
-
-# ╔═╡ 4800127a-30be-4594-bc4e-6bb6c9c3149b
-md"""Pensemos ahora en la cantidad de zombis que, cada vez que salen los humanos, aumenta (porque los humanos se convierten en zombis). Supongamos que estamos en un caso donde, cada vez que salen los humanos, la cantidad de zombis aumenta en un décimo:
-
-$\begin{array}{cccc}
-   z_0 & \phantom{aa} & z_1=z_0+\frac{z_0}{10} & \dots \\ 
-   t=0 & \phantom{aa} & t=1 & \dots \\
-  \end{array}$
-
- ¿Cuántos zombis hay a tiempo $n$ con respecto a lo que había al principio? Razonamos como antes:
-
-$z_{n+1} = z_n+\frac{1}{10}z_n = \Big(\frac{11}{10}\Big)z_n = \dots = \Big(\frac{11}{10}\Big)^{n+1} z_0$
-
-¿Cómo sería un gráfico de la cantidad de zombis en función del tiempo?"""
-
-# ╔═╡ c8262dd6-5c56-4786-be3a-9d37486a7c03
-md"""Conclusión, en cada caso tenemos que:
-
-$h_{n}=\alpha^n h_0, \hspace{2cm} z_{n}=\beta^n z_0,$
-
-para ciertos valores de $\alpha$ y $\beta$,  
-
-¿Qué podemos deducir del comportamiento cuando el tiempo $n$ se hace cada vez más grande?"""
+	</style>""")
 
 # ╔═╡ d52565c5-e983-40d2-ab65-c76bfc3fcc01
-html"""<h3 class="title">Crecimiento con natalidad y mortalidad</h3>"""
+@htl("""<h2 class="title">Crecimiento de poblaciones con natalidad y mortalidad</h2>""")
 
 # ╔═╡ 097d4c17-5966-4ef5-962d-c6545091e97c
 md"""
-Suponemos que la  población tiene la siguiente dinámica: en un instante de tiempo, la cantidad de humanos $h_{n+1}$ es igual a la que había en el instante anterior, $h_n$, agregando los qe nacen $+N h_n$, y restando las muertes $-M h_n$ (observar que los nacimientos y fallecimientos son proporcionales a la cantidad de humanos). Esto se puede escribir como
+Suponemos que la  población tiene la siguiente dinámica: en un instante de tiempo, la cantidad de zombis $z_{n+1}$ es igual a la que había en el instante anterior, $z_n$, agregando los que se transforman en zombis $+N z_n$, y restando las muertes $-M z_n$ (observar que el contagio y la mortalidad son proporcionales a la cantidad de zombis). Esto se puede escribir como
 
 
 $\begin{align*}
-	 h_{n+1}&:=h_n +N h_n - M h_n \\
-	 &=h_n+(N-M)h_n\\
-	 &=(1+N-M)h_n\\
-	 &:=\beta h_n
+	 z_{n+1}&:=z_n +N z_n - M z_n \\
+	 &=z_n+(N-M)z_n\\
+	 &=(1+N-M)z_n\\
+	 &:=\beta z_n
 \end{align*}$
 
-donde $h_n$ representa la cantidad de humanos en el instante $n$, siendo $n$ por ejemplo, años."""
+donde $z_n$ representa la cantidad de zombis en el instante $n$, siendo $n$ por ejemplo, años."""
 
 # ╔═╡ ed49e3ed-dd07-44bb-b5a5-ef86c9332859
 md"""
 
-1.   Si inicialmente hay $h_0$ humanos y sabemos que:
+1.   Si inicialmente hay ${\color{blue}{Z}}$ zombis y sabemos que:
 
-  *   La tasa de natalidad es del $\mathcal{N}\%$ anual, es decir: $N=\frac{\mathcal{N}}{100}$.
-  *   La tasa de mortalidad es de $\mathcal{M}\%$ anual, es decir: $M=\frac{\mathcal{M}}{100}$.
+  *   La tasa de contagio (*natalidad*) es del $n\%$ anual, es decir ${\color{blue}{N=n/100}}$
+  *   La tasa de mortalidad es de $m\%$ anual, es decir: ${\color{blue}{M=m/100}}$.
 
     La pregunta es: ¿Cuántos zombis habrá dentro de $15$ años?
 
@@ -134,171 +66,65 @@ md"""
 
 # ╔═╡ d07a8fee-051b-4167-9d92-d4474803e03d
 md"""
- h₀ = $(@bind h₁₀ Slider(1000:10:10000,default=1000,show_value=true)) 
+ Z = $(@bind Z Slider(1000:10:10000,default=1000,show_value=true)) 
 
- N = $(@bind N₁ Slider(0:0.01:1,default=0.5,show_value=true)) 
+ N = $(@bind n Slider(0:0.01:1,default=0.5,show_value=true)) 
 
- M = $(@bind M₁ Slider(0:0.01:1,default=0.3,show_value=true))
+ M = $(@bind m Slider(0:0.01:1,default=0.3,show_value=true))
 """
-#= El nombre verdadero de las variables es h₁₀, N₁ y M₁. 
-Esto es para no repetir nombres más adelante. 
-El subíndice 1 indica que son los datos para el primer modelo. 
-Para escribir un subíndice 1 hay que tipear: \_1 y luego "tab".
-=#
 
 # ╔═╡ e4f95747-ab32-47df-bf4d-359aec4b81fc
 begin 
-	tiempo₁ = 15        #Defino el tiempo que va a durar la simulación
-	h₁      = zeros(tiempo₁+1)  #Genero una tira de ceros para ir rellenando
-	h₁[1]   = h₁₀               #Cargo la población inicial (con lo que devuelve el slider)
-	β₁      = round(1+N₁-M₁,digits=2) # Calculo el β y lo redondeo
-	for i in 2:tiempo₁+1       # a lo largo del tiempo, voy calculando la població. 
-		h₁[i] = β₁*h₁[i-1]
+	tiempo = 15
+	zombis = zeros(15)
+	zombis[1] = (1+n-m)*Z
+	for i in 2:15
+		zombis[i] = (1+n-m)*zombis[i-1]
 	end
-	scatter(0:tiempo₁,h₁,legend=:top,label="Humanos", title="Evolución con β= $β₁") #grafico
+	scatter(zombis,legend=:top,label="zombis")
 end
 
 # ╔═╡ b12e6b22-0626-46d5-9608-480f454712f3
-md"""¿Qué ocurre si hay más natalidad que mortalidad? 
+md"""¿Qué ocurre si hay más contagios que muertes? 
 
- ¿Qué ocurre si hay más muertes que nacimientos? 
+ ¿Qué ocurre si hay más muertes que contagios? 
 
-¿Qué ocurre si las muertes y los nacimientos se equiparan?"""
+¿Qué ocurre si las muertes y los contagios se equiparan?"""
+
+# ╔═╡ 97a4a916-096b-4361-8d1b-0424a63d4edd
+md"""Recordemos que habíamos deducido que la cantidad de zombis se puede escribir como $z_n = \beta^n z_0$.
+
+En nuestro caso $\beta = (1+N-M)$, para conocer la población luego de $15$ años podríamos hacer directamente este cálculo:
+
+$z_{15} = (1+N-M)^{14}\cdot 1000$
+
+Volvemos a hacer el gráfico anterior y agregamos el valor de $z_{15}$, destacado:"""
+
+# ╔═╡ c1f2e4dd-c4ca-43fa-9fe8-8f2a8436893e
+begin
+	β   = (1+n-m)
+	z15 = β^15*Z
+	scatter(zombis,legend=:top,label="zombis")
+	scatter!([15],[z15],label="z15",marker=:star5,markersize=8)
+end
 
 # ╔═╡ 3ef542df-44a1-43af-872e-1138c12eb17f
-html"""<h2 class="title">Competencia entre especies</h2>"""
-
-# ╔═╡ 51443cff-ad5e-4d21-98ac-3256198e7a11
-md"""2.   A diferencia del modelo anterior, la cantidad de zombis y la cantidad de humanos dependen una de la otra. Empecemos suponiendo simplemente que la cantidad de zombis aumenta proporcionalmente a la cantidad de humanos. Entonces: 
-$$\left\lbrace\begin{array}{rcl}h_{n+1} & = & h_n-\alpha h_n \\ z_{n+1} & = & z_n+\alpha h_n \end{array}\right.$$
-¿Cómo es la evolución de las poblaciones?"""
-
-
-
-# ╔═╡ 3179374a-be70-4025-8510-f5986a779539
-md"""
- z₀ = $(@bind z₂₀ Slider(1:10:1000,default=1,show_value=true)) 
-
- h₀ = $(@bind h₂₀ Slider(1000:10:10000,default=1000,show_value=true)) 
-
- α = $(@bind α₂ Slider(0:0.01:1,default=0.01,show_value=true)) 
-"""
-
-# ╔═╡ 279340ea-7814-4c42-a4e6-79554262be86
-md"""$(@bind mostrar_total₂ CheckBox()) Población total"""
-
-# ╔═╡ 51d07f6d-f76d-4662-a71c-10422bef505f
-begin
-	tiempo₂ = 15
-	h₂      = zeros(tiempo₂+1)
-	z₂      = zeros(tiempo₂+1)
-	h₂[1] = h₂₀
-	z₂[1] = z₂₀
-	for i in 2:tiempo₂+1
-		h₂[i] = h₂[i-1] - α₂*h₂[i-1]
-		z₂[i] = z₂[i-1] + α₂*h₂[i-1]
-	end
-	if mostrar_total₂
-		scatter(0:tiempo₂,z₂,legend=:bottom,label="zombis",title="Evolución con α=$α₂")
-		scatter!(0:tiempo₂,h₂,label="humanos")
-		scatter!(0:tiempo₂,h₂+z₂,label="total")
-	else
-		scatter(0:tiempo₂,z₂,legend=:bottom,label="zombis",title="Evolución con α=$α₂")
-		scatter!(0:tiempo₂,h₂,label="humanos")
-	end
-end
-
-# ╔═╡ 8abac52d-9d1f-460c-b307-4a9425696520
-md"""¿Influyen las cantidades iniciales de zombis y humanos en la dinámica?
-
-¿Cambia la población total? ¿Por qué?
-
-Una linda forma de visualizar la información es con un  gráfico de áreas. ¿Cómo se interpreta este gráfico?"""
-
-# ╔═╡ b7d5379b-ce50-41c5-bc31-cb37c777ac80
-begin
-	plot(0:tiempo₂,z₂,legend=:bottom,label="zombis",fillrange=1,title="Evolución con α=$α₂")
-	plot!(0:tiempo₂,h₂+z₂,label="humanos",fillrange=z₂)
-end
-
-# ╔═╡ 9831f016-6497-4984-bc54-749b112cd384
-md"""3.   También podemos pensar que la cantidad de humanos decrece de manera proporcional a la cantidad de zombis, mientras que los zombis aumentan de manera proporcional a la cantidad de humanos, pero con parámetros distintos:
-
-$\left\lbrace\begin{array}{rcl}h_{n+1} & = & h_n-\alpha z_n \\ z_{n+1} & = & z_n+\beta h_n \end{array}\right.$
-"""
-
-# ╔═╡ 5487a745-e091-42ea-9e37-4b929df74822
-md"""
- z₀ = $(@bind z₃₀ Slider(1:3:100,default=10,show_value=true)) 
-
- h₀ = $(@bind h₃₀ Slider(1000:10:10000,default=1000,show_value=true)) 
-
- α = $(@bind α₃ Slider(0:0.01:1,default=0.05,show_value=true)) 
- 
- β = $(@bind β₃ Slider(0:0.01:1,default=0.05,show_value=true)) 
-
-tiempo = $(@bind tiempo₃ Slider(15:1:100,default=15,show_value=true)) 
-"""
-
-# ╔═╡ 444eb6b1-fc1d-4f82-ad0a-c19fc2511284
-md"""$(@bind gtot2 CheckBox()) Población total"""
-
-# ╔═╡ 2208fc1f-fed7-40ca-83a6-e24f6d374eae
-begin
-	h₃      = zeros(tiempo₃+1)
-	z₃      = zeros(tiempo₃+1)
-	h₃[1]   = h₃₀
-	z₃[1]   = z₃₀
-	for i in 2:tiempo₃+1
-		h₃[i] = max(h₃[i-1] - α₃*z₃[i-1],0) #tomamos el máximo entre la cuenta y 0 para evitar que la cuenta de poblaciones negativas
-		z₃[i] = max(z₃[i-1] + β₃*h₃[i-1],0)
-	end
-	if gtot2
-		scatter(0:tiempo₃,z₃,legend=:right,label="zombis",title="Evolución con α=$α₃ y β=$β₃")
-		scatter!(0:tiempo₃,h₃,label="humanos")
-		scatter!(0:tiempo₃,z₃+h₃,label="total")
-	else
-		scatter(0:tiempo₃,z₃,legend=:top,label="zombis")
-		scatter!(0:tiempo₃,h₃,label="humanos")
-	end
-end
-
-# ╔═╡ 0c083f3d-13a0-4ed8-a892-65e9ec8f4062
-md"""¿Cómo varía la cantidad de humanos si hay muchos zombis? ¿Y si hay pocos? 
-
- ¿Qué pasa con los zombis? ¿Y después de un largo tiempo, qué pasa?
-
- ¿Qué ocurre con la cantidad total de individuos (humanos + zombis), dependiendo de α y β?"""
-
-# ╔═╡ f91360f0-158a-4232-b62d-695a3dc14d70
-md"""Nuevamente, podemos ver la información de otra manera con un gráfico de áreas:"""
-
-# ╔═╡ bc2820f8-59e9-4b3d-96b2-e9b6cf29bbf3
-begin 
-	plot(0:tiempo₃,z₃,label="zombis",fillrange=1)
-	plot!(0:tiempo₃,h₃+z₃,label="humanos",fillrange=z₃)
-end
-
-# ╔═╡ 31eed41d-dc07-4764-b159-0a86f594f960
-md"""¿Cómo se interpreta este gráfico?"""
-
-# ╔═╡ bdeb879f-dde0-4ac5-9413-d5de4e3dda76
-md"""En este modelo, ¿hay alguna chance de que, a largo plazo, los humanos sobrevivan? """
+@htl("""<h2 class="title">Competencia entre especies</h2>""")
 
 # ╔═╡ 6b2ea6e3-8a31-4032-8f2f-4088c78fa15a
 md""" 
-4.  Veamos un modelo más complejo. Consideremos los siguiente:
+2.  Veamos un modelo más complejo. Consideremos lo siguiente:
 
   *   Los humanos nacemos proporcionalmente a nuestra población (a tasa $N$),
-  *   Los humanos morimos por causas ajenas a los zombis proporcionalmente a nuestra población (a tasa $M$),
   *   Para que un humano se convierta en zombi, se tiene que encontrar un humano con un zombi, tiene que haber interacción y hay una tasa de efectividad con la que los zombis logran contagiar a los humanos ($a$),
+  *   Los humanos morimos por causas ajenas a los zombis proporcionalmente a nuestra población (a tasa $M$),
   *   Los zombis no se reproducen ni mueren por causas naturales.
   *   Los zombis pueden morir cuando hay encuentro con humanos porque los humanos los matamos con una cierta tasa de efectividad ($b$).
 
     Las ecuaciones quedan:
   
-$\left\lbrace\begin{array}{rcl}h_{n+1} & = & h_n+N h_n-M h_n - a h_n z_n \\ 
-z_{n+1} & = & z_n+a h_n z_n -b h_n z_n \\
+$\left\lbrace\begin{array}{rcl}h_{k+1} & = & h_k+N h_k-M h_k - a h_k z_k \\ 
+z_{k+1} & = & z_k+a h_k z_k -b h_k z_k \\
 \end{array}\right.$"""
 
 
@@ -310,15 +136,15 @@ md"""Graficamos la situación asumiendo que en un comienzo hay 1000 humanos y 5 
 
 # ╔═╡ ba00baca-f3b2-4ee4-8332-547d3590a2b8
 md"""
- N = $(@bind N₄ Slider(0:0.001:0.05,default=0.001,show_value=true)) 
+ N = $(@bind N Slider(0:0.001:0.02,default=0.001,show_value=true)) 
 
- M = $(@bind M₄ Slider(0:0.001:0.05,default=0.001,show_value=true)) 
+ M = $(@bind M Slider(0:0.001:0.02,default=0.001,show_value=true)) 
 
- a = $(@bind a₄ Slider(0:0.0001:0.002,default=0.001,show_value=true)) 
+ a = $(@bind a Slider(0:0.0001:0.002,default=0.001,show_value=true)) 
  
- b = $(@bind b₄ Slider(0:0.0001:0.002,default=0.001,show_value=true)) 
+ b = $(@bind b Slider(0:0.0001:0.002,default=0.001,show_value=true)) 
 
-tiempo = $(@bind tiempo₄ Slider(10:500,default=20,show_value=true)) 
+tiempo = $(@bind pasos Slider(10:500,default=20,show_value=true)) 
 """
 
 # ╔═╡ e139d1a2-27ba-4252-9544-81f3d91f8de9
@@ -326,111 +152,97 @@ md"""$(@bind gtot3 CheckBox()) Población total"""
 
 # ╔═╡ 7583b506-778d-4000-b308-57d9192a4ead
 begin
-	h₄    = zeros(tiempo₄+1)
-	z₄    = zeros(tiempo₄+1)
-	h₄[1] = 1000
-	z₄[1] = 20
-	for i in 2:tiempo₄+1
-		h₄[i] = max(h₄[i-1] + (N₄-M₄)*h₄[i-1] - a₄*h₄[i-1]*z₄[i-1],0)
-		z₄[i] = max(z₄[i-1] + (a₄-b₄)*h₄[i-1]*z₄[i-1],0)
+	hInter    = zeros(pasos+1)
+	zInter    = zeros(pasos+1)
+	hInter[1] = 20
+	zInter[1] = 5
+	for i in 2:pasos+1
+		hInter[i] = hInter[i-1] + (N-M)*hInter[i-1] - a*hInter[i-1]*zInter[i-1]
+		zInter[i] = zInter[i-1] + (a-b)*hInter[i-1]*zInter[i-1]
 	end
 	if gtot3
-		scatter(0:tiempo₄,z₄,legend=:top,label="zombis")
-		scatter!(0:tiempo₄,h₄,label="humanos")
-		scatter!(0:tiempo₄,z₄+h₄,label="total")
+		scatter(0:pasos,zInter,legend=:top,label="zombis")
+		scatter!(0:pasos,hInter,label="humanos")
+		scatter!(0:pasos,zInter+hInter,label="total")
 	else
-		scatter(0:tiempo₄,z₄,legend=:top,label="zombis")
-		scatter!(0:tiempo₄,h₄,label="humanos")
+		scatter(0:pasos,zInter,legend=:top,label="zombis")
+		scatter!(0:pasos,hInter,label="humanos")
 	end
 end
 
-# ╔═╡ d189d858-e793-4571-a836-3ee3ef94b8f4
-md"""¿Qué ocurre con las poblaciones si $a>b$? ¿Y si $b>a$?
-
-¿Se ven posibilidades de que ambas poblaciones convivan con el tiempo?"""
-
 # ╔═╡ 7014b7a0-62c9-48d5-9aaa-4e84053da67e
 md"""
-6. Se puede observar una dinámica interesante si tenemos la suerte de que aparezca un virus que mate zombis. En tal caso, tendríamos una ayudita en la reducción de zombis. Lo podemos plantear así:
+3. Se puede observar una dinámica interesante si contemplamos la posibilidad de que los zombis mueran por "causas naturales". En ese caso, las ecuaciones quedan:
 
-  * Los humanos, si no hubiera zombis, crecerían a una tasa $\beta>1$. (Ya vimos que $\beta = 1+N-M$). 
-  * Los zombis, si no hubiera humanos, decrecerían a una tasa $\alpha<1$ Este $\alpha$ sería simplemente $1$ menos la mortalidad de los zombis por culpa del virus.
-  * Además, tenemos las interacciones, como en el modelo anterior. 
-
-Las ecuaciones quedan:
-
-$\left\lbrace\begin{array}{rcl}h_{n+1} & = & \beta h_n - a h_n z_n \\ 
-z_{n+1} & = & \alpha z_n+(a-b) h_n z_n \\
+$\left\lbrace\begin{array}{rcl}h_{k+1} & = & h_k+(N-M) h_k - a h_k z_k \\ 
+z_{k+1} & = & c z_k+(a-b) h_k z_k \\
 \end{array}\right.$
-"""
+
+Donde $c$ es la proporción de zombis que sobrevivirían con independencia de los encuentros con humanos.  Para simplificar el estudio de este modelo asumiremos que $N=0.017$, $M=0.008$ y que inicialmente hay 20 humanos y 5 zombis. 
+
+Nuevamente: ¿Existe alguna forma de que humanos y zombis convivan? ¿O siempre alguno de los dos deberá extinguirse?"""
 
 # ╔═╡ a33ee682-82c0-4b63-a7c8-dcf885003921
 md"""
- a = $(@bind a₅ Slider(0:0.001:0.01,default=0.001,show_value=true)) 
+ a = $(@bind a2 Slider(0:0.0001:0.002,default=0.001,show_value=true)) 
  
- b = $(@bind b₅ Slider(0:0.001:0.01,default=0.001,show_value=true)) 
+ b = $(@bind b2 Slider(0:0.0001:0.002,default=0.001,show_value=true)) 
 
- β = $(@bind β₅ Slider(1:0.0001:1.05,default=1.01,show_value=true))
+ c = $(@bind c2 Slider(0.5:0.01:1,default=0.1,show_value=true))
 
- α = $(@bind α₅ Slider(0:0.0001:0.99,default=0.1,show_value=true))
-
-tiempo = $(@bind tiempo₅ Slider(10:10:500,default=20,show_value=true)) 
+tiempo = $(@bind pasos2 Slider(10:1500,default=20,show_value=true)) 
 """
 
 # ╔═╡ dfa63e76-ca49-440f-91f1-bb6e1e605c72
-md"""$(@bind mostrar_total₅ CheckBox()) Población total"""
+md"""$(@bind gtot4 CheckBox()) Población total"""
 
 # ╔═╡ 9a644400-a5f1-4771-9ff8-9b610376cf3e
 begin
-	h₅    = zeros(tiempo₅+1)
-	z₅    = zeros(tiempo₅+1)
-	h₅[1] = 1000
-	z₅[1] = 5
-	for i in 2:tiempo₅+1
-		h₅[i] = max(β₅*h₅[i-1] - a₅*h₅[i-1]*z₅[i-1],0)
-		z₅[i] = max(α₅*z₅[i-1] + (a₅-b₅)*h₅[i-1]*z₅[i-1],0)
+	N2         = 0.017
+	M2         = 0.008
+	hInter2    = zeros(pasos2+1)
+	zInter2    = zeros(pasos2+1)
+	hInter2[1] = 19
+	zInter2[1] = 5
+	for i in 2:pasos2+1
+		hInter2[i] = (1+N2-M2)*hInter2[i-1] - a2*hInter2[i-1]*zInter2[i-1]
+		zInter2[i] = c2*zInter2[i-1] + (a2-b2)*hInter2[i-1]*zInter2[i-1]
 	end
-	if mostrar_total₅
-		plot(0:tiempo₅,z₅,legend=:top,label="zombis")
-		plot!(0:tiempo₅,h₅,label="humanos")
-		plot!(0:tiempo₅,h₅+z₅,label="total")
+	if gtot4
+		plot(0:pasos2,zInter2,legend=:top,label="zombis")
+		plot!(0:pasos2,hInter2,label="humanos")
+		plot!(0:pasos2,hInter2+zInter2,label="total")
 	else
-		plot(0:tiempo₅,z₅,legend=:top,label="zombis")
-		plot!(0:tiempo₅,h₅,label="humanos")
+		plot(0:pasos2,zInter2,legend=:top,label="zombis")
+		plot!(0:pasos2,hInter2,label="humanos")
 	end
 end
 
 # ╔═╡ 037558b0-ed72-470f-a65a-f9a5df04e0b2
-html"""<h2 class="title">Modelos epidémicos</h2>"""
+@htl("""<h2 class="title">Modelos epidémicos</h2>""")
 
 # ╔═╡ dab82d69-8a98-465f-bbc3-da791552adf7
-md"""6. Consideremos el modelo para enfermedades infecciosas $SI$:
-
- * Hay una población suceptible de contagiarse (los sanos), $S$ y una población de infectados,  $I$. 
- * La población general ($S+I$) tiene una cierta tasa de natalidad ($N$). 
- * La población sana tiene una cierta tasa de mortalidad, independiente de la enfermedad ($M$).
- * La población infectada tiene otra tasa de mortalidad ($m$).
- * Las interacciones producen contagios, a una cierta tasa. 
-
-Las ecuaciones quedan: 
+md"""Para terminar, consideremos el modelo para enfermedades infecciosas $SI$:
 
 $\left\lbrace\begin{array}{rcl}
-S_{n+1} & = & S_n+ N(S_n+I_n)-M S_n - a S_n I_n \\ 
-I_{n+1} & = & I_n - m I_n + a S_n I_n \\
+S_{k+1} & = & S_k+ N(S_k+I_k)-m_1 S_k - a S_k I_k \\ 
+I_{k+1} & = & I_k - m_2 I_k + a S_k I_k \\
 \end{array}\right.$
 """
 
 
 # ╔═╡ 1a222185-2e57-4ed4-a70b-317e641366ab
-md"""Para simplificar el análisis, tomamos $N=0.017$ y $m_1=0.008$, que son las tasas de natalidad y mortalidad de la Argentina. Asumimos que la población inicial está formada por $1000$ suceptibles y $5$ infectados. """
+md"""Nuevamente, fijamos los valores $N=0.017$, $m_1=0.008$ y asumimos que la población inicial está formada por $1000$ suceptibles y $5$ infectados.
+
+Agregamos (de manera opciona) una tercer curva que muestra la población total (S+I)."""
 
 # ╔═╡ b829c2b9-42e7-4a35-822b-8d202b0f883f
 md"""
- m = $(@bind m₆ Slider(0.1:0.01:0.2,default=0.001,show_value=true)) 
+ m₂ = $(@bind m2 Slider(0:0.01:0.2,default=0.001,show_value=true)) 
  
- a = $(@bind a₆ Slider(0:0.0001:0.001,default=0.001,show_value=true)) 
+ a = $(@bind η Slider(0:0.0001:0.001,default=0.001,show_value=true)) 
 
-tiempo = $(@bind tiempo₆ Slider(10:1500,default=20,show_value=true)) 
+tiempo = $(@bind steps Slider(10:1500,default=20,show_value=true)) 
 """
 
 # ╔═╡ ce983e3e-fb57-45ad-9617-0cf0e5518778
@@ -438,24 +250,24 @@ md"""$(@bind total CheckBox()) Población Total"""
 
 # ╔═╡ bb27b253-1894-4ee5-abbd-e64df9d0feb9
 begin
-	N₆    = 0.017
-	M₆    = 0.008
-	S₆    = zeros(tiempo₆+1)
-	I₆    = zeros(tiempo₆+1)
-	S₆[1] = 1000
-	I₆[1] = 5
-	for i in 2:tiempo₆+1
-		S₆[i] = max(S₆[i-1] + N₆*(S₆[i-1]+I₆[i-1]) - M₆*S₆[i-1]-a₆*S₆[i-1]*I₆[i-1],0)
-		I₆[i] = max(I₆[i-1] - m₆*I₆[i-1] + a₆*S₆[i-1]*I₆[i-1],0)
+	Ntot = 0.017
+	Mtot = 0.008
+	S    = zeros(steps+1)
+	I    = zeros(steps+1)
+	S[1] = 1000
+	I[1] = 5
+	for i in 2:steps+1
+		S[i] = S[i-1] + Ntot*(S[i-1]+I[i-1]) - Mtot*S[i-1]-η*S[i-1]*I[i-1]
+		I[i] = I[i-1] - m2*I[i-1] + a*S[i-1]*I[i-1]
 	end
 
 	if total
-		plot(0:tiempo₆,S₆,legend=:top,label="S")
-		plot!(0:tiempo₆,I₆,label="I")
-		plot!(0:tiempo₆,S₆+I₆,label="Total")
+		plot(0:steps,S,legend=:top,label="S")
+		plot!(0:steps,I,label="I")
+		plot!(0:steps,S+I,label="Total")
 	else
-		plot(0:tiempo₆,S₆,legend=:top,label="S")
-		plot!(0:tiempo₆,I₆,label="I")
+		plot(0:steps,S,legend=:top,label="S")
+		plot!(0:steps,I,label="I")
 	end
 	
 end
@@ -467,34 +279,21 @@ Probar con $m_2=0.15$ y $a=0.0005$. ¿Qué se ve a largo plazo? ¿Cómo debe int
 
 
 
-# ╔═╡ 1f2a6398-3233-4efa-8ad5-6e608e2912d8
-md"""Podemos complementar con un gráfico de áreas:"""
-
-# ╔═╡ dd8f5133-cfea-4947-af66-113f93a0c004
-begin
-	plot(0:tiempo₆,S₆,fillrange=1,label="Susceptibles",title="Evolución con a=$a₆, m=$m₆")
-	plot!(0:tiempo₆,I₆+S₆,fillrange=S₆,label="Infectados")
-end
-
 # ╔═╡ 725c4b76-0351-4ef7-b959-e17cc0f2fee2
-md"""7. Por último, consideremos el modelo que agrega un tratamiento, es decir: existe una tasa $v$ de curación, que convierte infectados en susceptibles. 
+md"""Por último, consideremos el modelo que agrega la vacunación: 
 
 $\left\lbrace\begin{array}{rcl}
-S_{n+1} & = & S_n+ N(S_n+I_n)-M S_n - a S_n I_n +vI_n \\ 
-I_{n+1} & = & I_n - m I_n + a S_k I_n -vI_n\\
-\end{array}\right.$
-
-Volvemos a dejar fijos los valores de $N$ y $M$ y de las poblaciones iniciales, para estudiar el efecto de los parámetros $m$, $a$ y $v$. """
+S_{k+1} & = & S_k+ N(S_k+I_k)-m_1 S_k - a S_k I_k +vI_n \\ 
+I_{k+1} & = & I_k - m_2 I_k + a S_k I_k -vI_n\\
+\end{array}\right.$"""
 
 # ╔═╡ 0c46405c-ffc0-4141-b35d-dee42692c2c1
 md"""
- m = $(@bind m₇ Slider(0.1:0.01:0.2,default=0.2,show_value=true))
+ a = $(@bind ξ Slider(0:0.0001:0.001,default=0.001,show_value=true))
 
- a = $(@bind a₇ Slider(0:0.0001:0.001,default=0.001,show_value=true))
+ v = $(@bind v Slider(0:0.001:1,default=0.001,show_value=true))
 
- v = $(@bind v₇ Slider(0:0.001:1,default=0.4,show_value=true))
-
-tiempo = $(@bind tiempo₇ Slider(10:1500,default=20,show_value=true)) 
+tiempo = $(@bind steps2 Slider(10:1500,default=20,show_value=true)) 
 """
 
 # ╔═╡ 97a12090-5923-47c3-9487-d936ee26e294
@@ -502,41 +301,38 @@ md"""$(@bind totv CheckBox()) Población Total"""
 
 # ╔═╡ 81ef7961-9632-4730-b0d3-1d3689d79871
 begin
-	N₇    = 0.017
-	M₇    = 0.008
-	S₇    = zeros(tiempo₇+1)
-	I₇    = zeros(tiempo₇+1)
-	S₇[1] = 1000
-	I₇[1] = 5
-	for i in 2:tiempo₇+1
-		S₇[i] = max(S₇[i-1] + N₇*(S₇[i-1]+I₇[i-1]) - M₇*S₇[i-1]-a₇*S₇[i-1]*I₇[i-1]+v₇*I₇[i-1],0)
-		I₇[i] = max(I₇[i-1] - m₇*I₇[i-1] + a₇*S₇[i-1]*I₇[i-1]-v₇*I₇[i-1],0)
+	Ntotv = 0.017
+	Mtotv = 0.008
+	Miv   = 0.001
+	Sv     = zeros(steps2+1)
+	Iv     = zeros(steps2+1)
+	Sv[1]  = 1000
+	Iv[1]  = 5
+	for i in 2:steps2+1
+		Sv[i] = Sv[i-1] + Ntotv*(Sv[i-1]+Iv[i-1]) - Mtotv*Sv[i-1]-ξ*Sv[i-1]*Iv[i-1]
+		Iv[i] = Iv[i-1] - Miv*Iv[i-1] + ξ*Sv[i-1]*Iv[i-1]-v*Iv[i-1]
 	end
 
 	if totv
-		plot(0:tiempo₇,S₇,legend=:top,label="S")
-		plot!(0:tiempo₇,I₇,label="I")
-		plot!(0:tiempo₇,S₇+I₇,label="Total")
+		plot(0:steps2,Sv,legend=:top,label="S")
+		plot!(0:steps2,Iv,label="I")
+		plot!(0:steps2,Sv+Iv,label="Total")
 	else
-		plot(0:tiempo₇,S₇,legend=:top,label="S")
-		plot!(0:tiempo₇,I₇,label="I")
+		plot(0:steps2,Sv,legend=:top,label="S")
+		plot!(0:steps2,Iv,label="I")
 	end
 	
-end
-
-# ╔═╡ fc9463b4-63ad-4e9f-99e7-5854d039c855
-begin
-	plot(0:tiempo₇,S₇,fillrange=1,label="Susceptibles",title="Evolución con m=$m₇, a=$a₇, v=$v₇")
-	plot!(0:tiempo₇,I₇+S₇,fillrange=S₇,label="Infectados")
 end
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
 [deps]
+HypertextLiteral = "ac1192a8-f4b3-4bfe-ba22-af5b92cd3ab2"
 Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
 PlutoUI = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
 
 [compat]
+HypertextLiteral = "~0.9.3"
 Plots = "~1.27.6"
 PlutoUI = "~0.7.38"
 """
@@ -945,9 +741,9 @@ uuid = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 
 [[deps.LogExpFunctions]]
 deps = ["ChainRulesCore", "ChangesOfVariables", "DocStringExtensions", "InverseFunctions", "IrrationalConstants", "LinearAlgebra"]
-git-tree-sha1 = "44a7b7bb7dd1afe12bac119df6a7e540fa2c96bc"
+git-tree-sha1 = "a970d55c2ad8084ca317a4658ba6ce99b7523571"
 uuid = "2ab3a3ac-af41-5b50-aa03-7779005ae688"
-version = "0.3.13"
+version = "0.3.12"
 
 [[deps.Logging]]
 uuid = "56ddb016-857b-54e1-b83d-db4d58db5568"
@@ -1448,42 +1244,22 @@ version = "0.9.1+5"
 """
 
 # ╔═╡ Cell order:
-# ╟─ac901706-a470-47ba-8351-f9e87869ab9a
+# ╠═ac901706-a470-47ba-8351-f9e87869ab9a
 # ╟─ec7ab690-a52c-11ec-1e8a-f77727daef1a
-# ╟─696e597a-45f0-44b9-b47e-a877abb87ab0
-# ╟─3a5b4a4f-7955-475f-9d02-448572a3e63a
-# ╟─7e7c5630-0999-401a-94ea-4e921c96d936
-# ╟─2a86adbe-972a-4dd9-845d-609b187879bf
-# ╟─4800127a-30be-4594-bc4e-6bb6c9c3149b
-# ╟─c8262dd6-5c56-4786-be3a-9d37486a7c03
 # ╟─d52565c5-e983-40d2-ab65-c76bfc3fcc01
 # ╟─097d4c17-5966-4ef5-962d-c6545091e97c
 # ╟─ed49e3ed-dd07-44bb-b5a5-ef86c9332859
 # ╟─d07a8fee-051b-4167-9d92-d4474803e03d
 # ╟─e4f95747-ab32-47df-bf4d-359aec4b81fc
 # ╟─b12e6b22-0626-46d5-9608-480f454712f3
+# ╟─97a4a916-096b-4361-8d1b-0424a63d4edd
+# ╟─c1f2e4dd-c4ca-43fa-9fe8-8f2a8436893e
 # ╟─3ef542df-44a1-43af-872e-1138c12eb17f
-# ╟─51443cff-ad5e-4d21-98ac-3256198e7a11
-# ╟─3179374a-be70-4025-8510-f5986a779539
-# ╟─279340ea-7814-4c42-a4e6-79554262be86
-# ╟─51d07f6d-f76d-4662-a71c-10422bef505f
-# ╟─8abac52d-9d1f-460c-b307-4a9425696520
-# ╟─b7d5379b-ce50-41c5-bc31-cb37c777ac80
-# ╟─9831f016-6497-4984-bc54-749b112cd384
-# ╟─5487a745-e091-42ea-9e37-4b929df74822
-# ╟─444eb6b1-fc1d-4f82-ad0a-c19fc2511284
-# ╟─2208fc1f-fed7-40ca-83a6-e24f6d374eae
-# ╟─0c083f3d-13a0-4ed8-a892-65e9ec8f4062
-# ╟─f91360f0-158a-4232-b62d-695a3dc14d70
-# ╟─bc2820f8-59e9-4b3d-96b2-e9b6cf29bbf3
-# ╟─31eed41d-dc07-4764-b159-0a86f594f960
-# ╟─bdeb879f-dde0-4ac5-9413-d5de4e3dda76
 # ╟─6b2ea6e3-8a31-4032-8f2f-4088c78fa15a
 # ╟─b979ab88-6cf4-4782-b45b-e812cf87ba36
 # ╟─ba00baca-f3b2-4ee4-8332-547d3590a2b8
 # ╟─e139d1a2-27ba-4252-9544-81f3d91f8de9
 # ╟─7583b506-778d-4000-b308-57d9192a4ead
-# ╟─d189d858-e793-4571-a836-3ee3ef94b8f4
 # ╟─7014b7a0-62c9-48d5-9aaa-4e84053da67e
 # ╟─a33ee682-82c0-4b63-a7c8-dcf885003921
 # ╟─dfa63e76-ca49-440f-91f1-bb6e1e605c72
@@ -1491,16 +1267,13 @@ version = "0.9.1+5"
 # ╟─037558b0-ed72-470f-a65a-f9a5df04e0b2
 # ╟─dab82d69-8a98-465f-bbc3-da791552adf7
 # ╟─1a222185-2e57-4ed4-a70b-317e641366ab
-# ╠═b829c2b9-42e7-4a35-822b-8d202b0f883f
+# ╟─b829c2b9-42e7-4a35-822b-8d202b0f883f
 # ╟─ce983e3e-fb57-45ad-9617-0cf0e5518778
 # ╟─bb27b253-1894-4ee5-abbd-e64df9d0feb9
 # ╟─23c6a842-6ed4-42d4-a56c-c821035a1453
-# ╟─1f2a6398-3233-4efa-8ad5-6e608e2912d8
-# ╟─dd8f5133-cfea-4947-af66-113f93a0c004
 # ╟─725c4b76-0351-4ef7-b959-e17cc0f2fee2
 # ╟─0c46405c-ffc0-4141-b35d-dee42692c2c1
 # ╟─97a12090-5923-47c3-9487-d936ee26e294
 # ╟─81ef7961-9632-4730-b0d3-1d3689d79871
-# ╟─fc9463b4-63ad-4e9f-99e7-5854d039c855
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002

@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.17.7
+# v0.19.5
 
 using Markdown
 using InteractiveUtils
@@ -168,8 +168,8 @@ begin
 	h₂[1] = 1000
 	z₂[1] = 5
 	for i in 2:tiempo₂+1
-		h₂[i] = h₂[i-1] + (N₂-M₂)*h₂[i-1] - a₂*h₂[i-1]*z₂[i-1]
-		z₂[i] = z₂[i-1] + (a₂-b₂)*h₂[i-1]*z₂[i-1]
+		h₂[i] = max(h₂[i-1] + (N₂-M₂)*h₂[i-1] - a₂*h₂[i-1]*z₂[i-1],0)
+		z₂[i] = max(z₂[i-1] + (a₂-b₂)*h₂[i-1]*z₂[i-1],0)
 	end
 	if mostrar_total₂
 		scatter(0:tiempo₂,z₂,legend=:top,label="zombis")
@@ -216,8 +216,8 @@ begin
 	h₃[1] = 20
 	z₃[1] = 5
 	for i in 2:tiempo₃+1
-		h₃[i] = (1+N₃-M₃)*h₃[i-1] - a₃*h₃[i-1]*z₃[i-1]
-		z₃[i] = c₃*z₃[i-1] + (a₃-b₃)*h₃[i-1]*z₃[i-1]
+		h₃[i] = max((1+N₃-M₃)*h₃[i-1] - a₃*h₃[i-1]*z₃[i-1],0)
+		z₃[i] = max(c₃*z₃[i-1] + (a₃-b₃)*h₃[i-1]*z₃[i-1],0)
 	end
 	if mostrar_total₃
 		plot(0:tiempo₃,z₃,legend=:top,label="zombis")
@@ -251,7 +251,7 @@ Agregamos (de manera opcional) una tercer curva que muestra la población total 
 
 # ╔═╡ b829c2b9-42e7-4a35-822b-8d202b0f883f
 md"""
- m = $(@bind m₄ Slider(0:0.01:0.2,default=0.001,show_value=true)) 
+ m = $(@bind m₄ Slider(0.1:0.01:0.2,default=0.001,show_value=true)) 
  
  a = $(@bind a₄ Slider(0:0.0001:0.001,default=0.001,show_value=true)) 
 
@@ -270,8 +270,8 @@ begin
 	S₄[1] = 1000
 	I₄[1] = 5
 	for i in 2:tiempo₄+1
-		S₄[i] = S₄[i-1] + N₄*(S₄[i-1]+I₄[i-1]) - M₄*S₄[i-1]-a₄*S₄[i-1]*I₄[i-1]
-		I₄[i] = I₄[i-1] - m₄*I₄[i-1] + a₄*S₄[i-1]*I₄[i-1]
+		S₄[i] = max(S₄[i-1] + N₄*(S₄[i-1]+I₄[i-1]) - M₄*S₄[i-1]-a₄*S₄[i-1]*I₄[i-1],0)
+		I₄[i] = max(I₄[i-1] - m₄*I₄[i-1] + a₄*S₄[i-1]*I₄[i-1],0)
 	end
 
 	if mostrar_total₄
@@ -306,7 +306,7 @@ md"""
 
  v = $(@bind v₅ Slider(0:0.001:1,default=0.001,show_value=true))
 
-tiempo = $(@bind tiempo₅ Slider(10:1500,default=20,show_value=true)) 
+tiempo = $(@bind tiempo₅ Slider(10:100,default=20,show_value=true)) 
 """
 
 # ╔═╡ 97a12090-5923-47c3-9487-d936ee26e294
@@ -322,8 +322,8 @@ begin
 	S₅[1]  = 1000
 	I₅[1]  = 5
 	for i in 2:tiempo₅+1
-	   S₅[i] = S₅[i-1]+N₅*(S₅[i-1]+I₅[i-1])-M₅*S₅[i-1]-a₅*S₅[i-1]*I₅[i-1]+v₅*I₅[i-1]
-	   I₅[i] = I₅[i-1] - m₅*I₅[i-1] + a₅*S₅[i-1]*I₅[i-1]-v₅*I₅[i-1]
+	   S₅[i] = max(S₅[i-1]+N₅*(S₅[i-1]+I₅[i-1])-M₅*S₅[i-1]-a₅*S₅[i-1]*I₅[i-1]+v₅*I₅[i-1],0)
+	   I₅[i] = max(I₅[i-1] - m₅*I₅[i-1] + a₅*S₅[i-1]*I₅[i-1]-v₅*I₅[i-1],0)
 	end
 
 	if mostrar_total₅
@@ -1270,7 +1270,7 @@ version = "0.9.1+5"
 # ╟─b979ab88-6cf4-4782-b45b-e812cf87ba36
 # ╟─ba00baca-f3b2-4ee4-8332-547d3590a2b8
 # ╟─e139d1a2-27ba-4252-9544-81f3d91f8de9
-# ╟─7583b506-778d-4000-b308-57d9192a4ead
+# ╠═7583b506-778d-4000-b308-57d9192a4ead
 # ╟─7014b7a0-62c9-48d5-9aaa-4e84053da67e
 # ╟─a33ee682-82c0-4b63-a7c8-dcf885003921
 # ╟─dfa63e76-ca49-440f-91f1-bb6e1e605c72
